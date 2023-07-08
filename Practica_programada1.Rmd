@@ -81,7 +81,7 @@ datos_limpios <- datos_limpios |>
 ```
 
 ```{r}
-unique(datos_limpios$Tipo) #funcion para verificar si se arreglaron los cambios de las variables
+unique(datos_limpios$Tipo) #funcion para verificar si se modificaron los cambios de las variables
 ```
 
 ```{r}
@@ -114,6 +114,64 @@ datos_limpios <- datos_limpios |>
   mutate(Mes = month(fecha))
 ```
 
+Una vez que haya terminado la limpieza anterior, responda las siguientes preguntas:
+
+i. Cuántas películas y shows de TV hay por país? (4pts)
+```{r}
+peliculas <- datos_limpios %>%
+  filter(Tipo %in% c("Movie", "TV Show")) %>%
+  count(Pais, Tipo) %>%
+  pivot_wider(names_from = Tipo, values_from = n, values_fill = 0)
+              
+peliculas
+```
+
+```{r}
+cantidad_pelis <- datos_limpios |> 
+  filter(Tipo %in% c("Movie", "TV Show")) |> 
+  count(Pais, Tipo) |> 
+  as.data.frame()
+```
+
+
+j. Cuáles son los 10 directores con mayor cantidad de películas (sin contar shows de TV) en Netflix?
+Ordénelos por orden descendente. (4pts)
+
+```{r}
+directores <- datos_limpios |>
+  filter(Tipo=="Movie") |>
+  count(Director, Tipo) |>
+  arrange(desc(n)) |> 
+  head(10)
+```
+k. Cuáles son los 10 directores con mayor cantidad de shows de TV (sin contar películas) en Netflix?Ordénelos por orden descendente. (4pts)
+
+```{r}
+directores10 <- datos_limpios |>
+  filter(Tipo=="TV Show") |>
+  count(Director, Tipo) |>
+  arrange(desc(n)) |> 
+  head(10)
+```
+l. Obtenga la lista de películas y shows de TV que se añadieron en marzo del año 2020. Cuántos fueron?
+(4pts)
+`
+
+```{r}
+Lista_peliculas <- datos_limpios |>
+  filter(Tipo =="Movie", Año == 2020, Mes == 3)
+
+Total <- nrow(Lista_peliculas)
+#93
+```
+
+```{r}
+Lista_showTV <- datos_limpios|>
+  filter(Tipo =="TV Show", Año == 2020, Mes == 3)
+
+Total <- nrow(Lista_showTV)
+#44
+```
 
 
 
