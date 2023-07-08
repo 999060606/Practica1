@@ -26,7 +26,7 @@ datos_netflix <- "https://raw.githubusercontent.com/isa229/programacion_analisis
 datos <- read_csv2(datos_netflix)
 ```
 
-Ajuste los nombres de las columnas para que estén en español. (2pts)
+b)Ajuste los nombres de las columnas para que estén en español. 
 
 ```{r}
 nombres_columnas <- c("ID", "Tipo", "Titulo", "Director", "Pais", "fecha", "año_lanzamiento", "calificacion", "Duracion", "Categoria")
@@ -35,7 +35,7 @@ colnames(datos) <- nombres_columnas
 
 c. Elimine filas duplicadas. (2pts)
 ```{r}
-duplicados <- get_dupes(datos) ##que registros estan duplicados
+duplicados <- get_dupes(datos) ## muestraregistros estan duplicados
 ```
 
 ```{r}
@@ -61,8 +61,7 @@ datos_limpios <- datos_sin_vacios |>
   distinct()
 ```
 
-f. Haga una inspección de las variables type y country para determinar si hay observaciones mal escritas o
-escritas de diferentes maneras. Si es ahí, haga la limpieza para poder homogenizar esos datos. (10pts)
+f. Haga una inspección de las variables type y country para determinar si hay observaciones mal escritas o escritas de diferentes maneras. Si es ahí, haga la limpieza para poder homogenizar esos datos. (10pts)
 
 ```{r}
 type_table <- as.data.frame(table(datos_limpios$Tipo))
@@ -97,6 +96,26 @@ datos_limpios<- datos_limpios|>
 unique(datos_limpios$Pais)
 ```
 g. Para todas las columnas de tipo carácter, en donde haya NA, coloque “Sin información”. (4pts)
+
+```{r}
+datos_limpios <- datos_limpios |> 
+  mutate(across(where(is.character), ~replace(., is.na(.), "Sin información")))
+```
+h. Añada a su conjunto de datos una nueva columna llamada anyo que indique el año en que el show o película fue añadido a Netflix. Añada también una columna llamada mes que indique el mes en que el show o película fue añadido a Netflix. (6pts)
+
+```{r}
+datos_limpios <- datos_limpios |> 
+  mutate(fecha = mdy(fecha))
+
+datos_limpios <- datos_limpios |>                              
+  mutate(Año = year(fecha))
+
+datos_limpios <- datos_limpios |>                              
+  mutate(Mes = month(fecha))
+```
+
+
+
 
 
 
